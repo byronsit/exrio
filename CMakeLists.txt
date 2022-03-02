@@ -23,7 +23,7 @@ set(BoldMagenta "${Esc}[1;35m")
 set(BoldCyan    "${Esc}[1;36m")
 set(BoldWhite   "${Esc}[1;37m")
 
-set(BUILD_WITH_OPENCV true CACHE BOOL "build opencv lib, then you can load exr to pencv")
+set(BUILD_WITH_OPENCV false CACHE BOOL "build opencv lib, then you can load exr to pencv")
 set(BUILD_WITH_PYTHON true CACHE BOOL "build python lib, then you can use python to import exrio")
 set(PYTHON_VERSION 3.6 CACHE STRING "set your python version, you can set 3.6 3.7 3.8 2.7 or others")
 
@@ -134,11 +134,11 @@ target_link_libraries(exrio
 #execute_process(COMMAND "${CMAKE_SOURCE_DIR}/cmake/install_python.bash")
 
 message("your python exe is :" ${PYTHON_EXE})
-execute_process(COMMAND ${PYTHON_EXE} "-c" "import sysconfig; print(sysconfig.get_paths()['purelib'])" OUTPUT_VARIABLE  python-dist-packages)
+execute_process(COMMAND ${PYTHON_EXE} "-c" "import sysconfig; print(sysconfig.get_paths()['platstdlib'])" OUTPUT_VARIABLE  python-dist-packages)
 
 string(REPLACE "\n" "" python-dist-packages "${python-dist-packages}") #删除多余的回车符号
-message("your python-dist path: "  ${python-dist-packages})
-message("python install path:" [${python-dist-packages}/exrio])
+message("your platstdlib path: "  ${python-dist-packages})
+message("python so install path:" [${python-dist-packages}/lib-dynload])
         
 
 
@@ -193,7 +193,7 @@ install(
 if (BUILD_WITH_PYTHON)
 install (
     TARGETS exrio_python
-    LIBRARY DESTINATION  ${python-dist-packages}/exrio )
+    LIBRARY DESTINATION  ${python-dist-packages}/lib-dynload )
 
 install (
     TARGETS exrio_python
